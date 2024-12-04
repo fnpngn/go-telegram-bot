@@ -26,9 +26,16 @@ func runTests() {
 		if strings.HasPrefix(line, "ok") || strings.HasPrefix(line, "FAIL") {
 			parts := strings.Fields(line)
 			passed := strings.HasPrefix(line, "ok")
+
+			var output string
+			if len(parts) > 2 {
+				output = strings.Join(parts[2:], " ")
+			} else {
+				output = strings.Join("::", line)
+			}
 			testResults = append(testResults, TestResult{
 				Package: parts[1],
-				Output:  strings.Join(parts[2:], " "),
+				Output:  output,
 				Passed:  passed,
 			})
 		}
