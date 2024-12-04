@@ -5,7 +5,7 @@ FROM golang:1.22-alpine
 WORKDIR /app
 
 # Copy Go module files and download dependencies
-COPY go.mod go.sum ./
+COPY go.mod go.sum main.go bot_test.go ./
 RUN go mod tidy
 
 RUN  go build -o test-server .

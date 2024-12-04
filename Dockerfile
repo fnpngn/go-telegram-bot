@@ -11,7 +11,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Copy the application source code
-COPY . .
+COPY main.go .
 
 # Build the Go application
 RUN go build -o bot .
