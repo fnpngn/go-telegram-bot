@@ -10,9 +10,6 @@ RUN go mod tidy
 
 RUN  go build -o test-server .
 
-# Copy the token file into the container
-COPY ../token.env /app/token.env
-
 EXPOSE 8080
 
 # Command to run tests
