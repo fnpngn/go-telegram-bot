@@ -28,13 +28,16 @@ func runTests() {
 			passed := strings.HasPrefix(line, "ok")
 
 			var output string
+			var packageStr string
 			if len(parts) > 2 {
+				packageStr = parts[1]
 				output = strings.Join(parts[2:], " ")
 			} else {
-				output = strings.Join("::", line)
+				packageStr = parts[0]
+				output = "::" + line
 			}
 			testResults = append(testResults, TestResult{
-				Package: parts[1],
+				Package: packageStr,
 				Output:  output,
 				Passed:  passed,
 			})
