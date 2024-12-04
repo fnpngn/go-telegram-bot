@@ -17,7 +17,7 @@ COPY . .
 RUN go build -o bot .
 
 # Expose the default port (optional, depends on how you intend to access logs or metrics)
-EXPOSE 8080
+EXPOSE 8081
 
 # Copy the token file into the container
 COPY token.env /app/token.env
