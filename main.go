@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
+	"gopkg.in/telebot.v3"
 	"log"
 	"strings"
-
-	"gopkg.in/telebot.v3"
 	"time"
 )
 

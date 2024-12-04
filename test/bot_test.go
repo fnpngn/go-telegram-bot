@@ -1,4 +1,4 @@
-package main
+package telegram-bot-test
 
 import (
 	"reflect"
