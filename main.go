@@ -105,7 +105,7 @@ func main() {
 		}
 
 		return c.Send("I learned these facts about you:\n"+factsToStr(userData[chatID])+"\nUntil next time!",
-			telebot.ReplyMarkup{ReplyKeyboardRemove: true})
+			&telebot.ReplyMarkup{RemoveKeyboard: true})
 	})
 
 	log.Println("Bot is running...")
