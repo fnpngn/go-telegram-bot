@@ -19,5 +19,11 @@ RUN go build -o bot .
 # Expose the default port (optional, depends on how you intend to access logs or metrics)
 EXPOSE 8080
 
+# Copy the token file into the container
+COPY token.env /app/token.env
+
+# Set the environment variable using the token file
+ENV TELEGRAM_BOT_TOKEN=$(cat /app/token.env)
+
 # Command to run the bot
 CMD ["./bot"]

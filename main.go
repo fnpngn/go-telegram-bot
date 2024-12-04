@@ -33,6 +33,11 @@ func factsToStr(data UserData) string {
 }
 
 func main() {
+	token := os.Getenv("TELEGRAM_BOT_TOKEN")
+	if token == "" {
+		log.Fatal("TELEGRAM_BOT_TOKEN environment variable is not set")
+	}
+
 	pref := telebot.Settings{
 		Token:  "TOKEN",
 		Poller: &telebot.LongPoller{Timeout: 10 * time.Second},
