@@ -11,6 +11,9 @@ build_images() {
 run_containers() {
     echo "Running Docker containers..."
 
+    # Read the Telegram bot token from the file
+    TELEGRAM_BOT_TOKEN=$(cat token.txt)
+
     # Run the Telegram bot container
     docker run --rm -it -e TOKEN=$TELEGRAM_BOT_TOKEN telegram-bot &
 
@@ -21,9 +24,6 @@ run_containers() {
 # Main script execution
 main() {
     echo "Starting deployment process..."
-
-    # Export your Telegram bot token here
-    export TELEGRAM_BOT_TOKEN="<your_telegram_bot_token>"
 
     # Build and run the Docker containers
     build_images
