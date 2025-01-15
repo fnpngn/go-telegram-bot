@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Exit immediately if a command exits with a non-zero status 
+set -e
+
 # Function to build Docker images
 build_images() {
     echo "Building Docker images..."
-    docker build -t telegram-bot .
-    docker build -t test-results-server .
+    docker build -t telegram-bot ./bot
+    docker build -t test-results-server ./testing
 }
 
 # Function to run Docker containers
