@@ -1,1 +1,0 @@
-docker run --env-file=token.env --rm telegram-bot
