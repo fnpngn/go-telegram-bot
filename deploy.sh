@@ -15,10 +15,10 @@ run_containers() {
     TELEGRAM_BOT_TOKEN=$(cat token.txt)
 
     # Run the Telegram bot container
-    docker run --rm -it -e TOKEN=$TELEGRAM_BOT_TOKEN telegram-bot &
+    docker run -p 5486:8080 --rm -it -e TOKEN=$TELEGRAM_BOT_TOKEN telegram-bot &
 
     # Run the test results server container
-    docker run -p 8080:8080 test-results-server &
+    docker run -p 7146:8080 test-results-server &
 }
 
 # Main script execution
