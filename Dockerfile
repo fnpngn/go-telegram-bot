@@ -1,23 +1,29 @@
-# Use an official Golang runtime as a parent image
-FROM golang:1.22
+# Use a minimal base image for Go
+FROM golang:1.20-alpine
 
-# Set the working directory inside the container
+# Set environment variables
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+# Set the working directory
 WORKDIR /app
 
-# Copy go.mod and go.sum files
+# Copy go.mod and go.sum first for dependency caching
 COPY go.mod go.sum ./
 
 # Download dependencies
 RUN go mod download
 
-# Copy the application source code
-COPY main.go .
+# Copy the application code
+COPY . .
 
-# Build the Go application
-RUN go build -o bot .
+# Build the application
+RUN go build -o app ./cmd/main.go
 
-# Expose the default port (optional, depends on how you intend to access logs or metrics)
-EXPOSE 8081
+# Expose the port (if needed)
+EXPOSE 8080
 
-# Command to run the bot
-CMD ["./bot"]
+# Run the application
+CMD ["./app"]
