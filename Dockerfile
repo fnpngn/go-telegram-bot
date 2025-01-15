@@ -1,29 +1,35 @@
-# Use a minimal base image for Go
-FROM golang:1.20-alpine
+# Stage 1: Build Stage
+FROM golang:1.20-alpine AS builder
 
-# Set environment variables
+# Set environment variables for building
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
     GOARCH=amd64
 
-# Set the working directory
 WORKDIR /app
 
-# Copy go.mod and go.sum first for dependency caching
+# Copy dependency files first for efficient caching
 COPY go.mod go.sum ./
-
-# Download dependencies
 RUN go mod download
 
-# Copy the application code
+# Copy the rest of the application code
 COPY . .
 
-# Build the application
+# Build the Go application
 RUN go build -o app ./cmd/main.go
 
-# Expose the port (if needed)
-EXPOSE 8080
+# Stage 2: Runtime Stage
+FROM alpine:3.18
 
-# Run the application
+WORKDIR /app
+
+# Copy only the built binary from the build stage
+COPY --from=builder /app/app .
+
+# Set a non-root user for better security
+RUN adduser -D -u 1001 appuser
+USER appuser
+
+# Command to run the application
 CMD ["./app"]
