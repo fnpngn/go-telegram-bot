@@ -16,10 +16,12 @@ const (
 )
 
 var (
-	replyKeyboard = [][]telebot.Btn{
-		{telebot.Btn{Text: "Age"}, telebot.Btn{Text: "Favourite colour"}},
-		{telebot.Btn{Text: "Number of siblings"}, telebot.Btn{Text: "Something else..."}},
-		{telebot.Btn{Text: "Done"}},
+	replyKeyboard = &telebot.ReplyMarkup{
+		ReplyKeyboard: [][]telebot.ReplyButton{
+			{{Text: "Age"}, {Text: "Favourite colour"}},
+			{{Text: "Number of siblings"}, {Text: "Something else..."}},
+			{{Text: "Done"}},
+		},
 	}
 )
 
@@ -65,23 +67,23 @@ func main() {
 		}
 
 		state[uid] = CHOOSING
-		return c.Reply(reply, telebot.ReplyMarkup{ReplyKeyboard: replyKeyboard})
+		return c.Reply(reply, replyKeyboard)
 	})
 
 	// Handle predefined choices
-	bot.Handle(&telebot.Btn{Text: "Age"}, choiceHandler(bot, "Age", userData, state))
-	bot.Handle(&telebot.Btn{Text: "Favourite colour"}, choiceHandler(bot, "Favourite colour", userData, state))
-	bot.Handle(&telebot.Btn{Text: "Number of siblings"}, choiceHandler(bot, "Number of siblings", userData, state))
+	bot.Handle(telebot.ReplyButton{Text: "Age"}, choiceHandler(bot, "Age", userData, state))
+	bot.Handle(telebot.ReplyButton{Text: "Favourite colour"}, choiceHandler(bot, "Favourite colour", userData, state))
+	bot.Handle(telebot.ReplyButton{Text: "Number of siblings"}, choiceHandler(bot, "Number of siblings", userData, state))
 
 	// Custom category
-	bot.Handle(&telebot.Btn{Text: "Something else..."}, func(c telebot.Context) error {
+	bot.Handle(telebot.ReplyButton{Text: "Something else..."}, func(c telebot.Context) error {
 		uid := c.Sender().ID
 		state[uid] = TYPING_CHOICE
 		return c.Reply("Alright, please send me the category first, for example 'Most impressive skill'")
 	})
 
 	// Done handler
-	bot.Handle(&telebot.Btn{Text: "Done"}, func(c telebot.Context) error {
+	bot.Handle(telebot.ReplyButton{Text: "Done"}, func(c telebot.Context) error {
 		uid := c.Sender().ID
 		data := userData[uid]
 		reply := "I learned these facts about you: " + factsToStr(data) + "\nUntil next time!"
@@ -109,7 +111,7 @@ func main() {
 			reply := "Neat! Just so you know, this is what you already told me:\n" +
 				factsToStr(userData[uid]) +
 				"\nYou can tell me more, or change your opinion on something."
-			return c.Reply(reply, telebot.ReplyMarkup{ReplyKeyboard: replyKeyboard})
+			return c.Reply(reply, replyKeyboard)
 
 		default:
 			return c.Reply("Please use the menu options.")

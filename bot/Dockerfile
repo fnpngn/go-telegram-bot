@@ -7,24 +7,25 @@ ENV GO111MODULE=on \
     GOOS=linux \
     GOARCH=amd64
 
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy dependency files first for efficient caching
-COPY go.mod go.sum ./
-RUN go mod download
-
-# Copy the rest of the application code
+# Copy the go.mod and go.sum files first from the bot directory
 COPY . .
 
+# Download Go dependencies
+RUN go mod download
+
+
 # Build the Go application
-RUN go build -o app ./cmd/main.go
+RUN go build -o app ./main.go
 
 # Stage 2: Runtime Stage
 FROM alpine:3.18
 
 WORKDIR /app
 
-# Copy only the built binary from the build stage
+# Copy the built binary from the builder stage
 COPY --from=builder /app/app .
 
 # Set a non-root user for better security

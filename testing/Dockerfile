@@ -11,7 +11,7 @@ COPY . .
 RUN go mod tidy
 
 # Build the application
-RUN go build -o server .
+RUN go build -o server ./testing/main.go
 
 # Expose the port
 EXPOSE 8080
